@@ -12,12 +12,14 @@ Run all tests and analyze any failures.
 **Usage:** `/failing-tests [test-pattern]`
 
 **Examples:**
+
 - `/failing-tests` - Run all tests, analyze failures
 - `/failing-tests auth` - Run only auth-related tests
 - `/failing-tests --flaky` - Identify and fix flaky tests
 - `/failing-tests --fix` - Automatically fix simple failures
 
 **Workflow:**
+
 1. Run tests and capture failures
 2. Parse error messages and stack traces
 3. Analyze root causes
@@ -46,7 +48,7 @@ Run specified tests and analyze failures.
    ```bash
    # Check for test runners
    ls package.json go.mod pytest.ini Cargo.toml 2>/dev/null
-   ```
+   ```text
 
    Identify:
    - **Node.js**: Jest, Vitest, Mocha
@@ -57,24 +59,28 @@ Run specified tests and analyze failures.
 2. **Run Tests**
 
    **Node.js (Jest)**:
+
    ```bash
    npx jest --json --outputFile=test-results.json 2>&1 || true
-   ```
+   ```text
 
    **Node.js (Vitest)**:
+
    ```bash
    npx vitest run --reporter=json 2>&1 || true
-   ```
+   ```text
 
    **Go**:
+
    ```bash
    go test -v -json ./... 2>&1 | tee test-output.json || true
-   ```
+   ```text
 
    **Python**:
+
    ```bash
    pytest -v --tb=short 2>&1 || true
-   ```
+   ```text
 
    Capture both stdout and stderr for analysis.
 
@@ -95,7 +101,7 @@ Run specified tests and analyze failures.
      "error": "Expected: 200, Received: 401",
      "stack": "at Object.<anonymous> (login.test.ts:45:5)"
    }
-   ```
+   ```text
 
 4. **Analyze Root Causes**
 
@@ -140,7 +146,7 @@ Run specified tests and analyze failures.
    for i in {1..5}; do
      npx jest --json >> flaky-results.json 2>&1
    done
-   ```
+   ```text
 
    Analyze:
    - Tests that pass/fail inconsistently
@@ -170,10 +176,12 @@ Run specified tests and analyze failures.
    ### 1. auth/login.test.ts - "should authenticate user"
 
    **Error**:
-   ```
+   ```text
+
    Expected: 200
    Received: 401
-   ```
+
+   ```text
 
    **Root Cause**: Auth mock not returning expected token
 
@@ -184,7 +192,7 @@ Run specified tests and analyze failures.
      token: 'valid-token',
      user: mockUser
    });
-   ```
+   ```text
 
    **File**: `src/auth/__tests__/login.test.ts:45`
 
@@ -193,19 +201,21 @@ Run specified tests and analyze failures.
    ### 2. api/users.test.ts - "should list users"
 
    **Error**:
-   ```
+
+   ```text
    Timeout - Async callback was not invoked within 5000ms
-   ```
+   ```text
 
    **Root Cause**: Missing await on async operation
 
    **Fix**:
+
    ```typescript
    // Change line 67 from:
    const result = userService.list();
    // To:
    const result = await userService.list();
-   ```
+   ```text
 
    ---
 
@@ -221,7 +231,8 @@ Run specified tests and analyze failures.
    1. **Immediate**: Fix auth mock setup (3 tests affected)
    2. **Quick win**: Add missing awaits (2 tests)
    3. **Investigate**: Flaky cache tests need refactor
-   ```
+
+   ```text
 
 8. **Apply Fixes (if --fix)**
 
@@ -232,26 +243,29 @@ Run specified tests and analyze failures.
    - Expected value corrections
 
    **b. Add missing awaits**
+
    ```typescript
    // Find and fix unawaited async calls
-   ```
+   ```text
 
    **c. Fix mock setups**
+
    ```typescript
    // Add missing mock implementations
-   ```
+   ```text
 
    **d. Environment fixes**
+
    ```bash
    # Add missing env vars to test setup
-   ```
+   ```text
 
 9. **Verify Fixes**
 
    ```bash
    # Re-run previously failing tests
    npx jest --testPathPattern="failing-test-name"
-   ```
+   ```text
 
    Confirm:
    - All targeted failures now pass
@@ -280,7 +294,7 @@ Run specified tests and analyze failures.
 
 ## Remaining Issues
 [What needs manual intervention]
-```
+```text
 
 ## Common Failure Patterns
 

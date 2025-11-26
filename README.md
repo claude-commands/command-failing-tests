@@ -14,7 +14,7 @@ ln -s <clone-path>/command-failing-tests/failing-tests.md ~/.claude/commands/fai
 
 ## Usage
 
-```
+```text
 /failing-tests              # Run all tests, analyze failures
 /failing-tests auth         # Run only auth-related tests
 /failing-tests --flaky      # Identify flaky tests
